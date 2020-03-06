@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="mcount">
+        <item>个</item>
+        <item>件</item>
+        <item>包</item>
+        <item>盒</item>
+        <item>捆</item>
+        <item>箱</item>
+    </string-array>
+</resources>

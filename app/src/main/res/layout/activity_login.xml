@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg2"
+    tools:context=".LoginActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        >
+        <EditText
+            android:id="@+id/userid"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/loginedit_bg"
+            android:hint="用户名或工号"
+            android:drawableLeft="@drawable/user"
+            android:drawablePadding="2dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:textSize="18sp"
+            android:layout_margin="10dp"/>
+        <EditText
+            android:id="@+id/userpwd"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/loginedit_bg"
+            android:hint="密码"
+            android:drawableLeft="@drawable/pwd"
+            android:drawablePadding="2dp"
+            android:inputType="textPassword"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:textSize="18sp"
+            android:layout_margin="10dp"/>
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="确   定"
+            android:textSize="20sp"
+            android:background="@drawable/button_bg"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>
