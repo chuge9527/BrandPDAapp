@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
                 //登录成功
                 //  Intent intent = new Intent(LoginActivity.this,Http2Activity.class);
                 //   Intent intent = new Intent(LoginActivity.this,Instore1Activity.class);
-                Intent intent = new Intent(LoginActivity.this,Instore1Activity.class);
+                Intent intent = new Intent(LoginActivity.this,Outstore1Activity.class);
                 startActivity(intent);
             }
         });
