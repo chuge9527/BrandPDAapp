@@ -24,6 +24,6 @@ public class Detail1Fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mtext =(TextView) view.findViewById(R.id.text1);
+        mtext =(TextView) view.findViewById(R.id.trayTX);
     }
 }

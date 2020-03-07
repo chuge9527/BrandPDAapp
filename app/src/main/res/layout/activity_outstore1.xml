@@ -12,7 +12,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="25dp"
+
         >
 
         <Button
@@ -33,11 +33,11 @@
             android:textSize="20sp"
             android:background="@drawable/loginedit_bg"/>
     </RelativeLayout>
-    <fragment
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.wayzim.wayzimpda.Detail1Fragment"
-        android:id="@+id/fg1"/>
+        android:id="@+id/frame1"/>
 
 
 </LinearLayout>

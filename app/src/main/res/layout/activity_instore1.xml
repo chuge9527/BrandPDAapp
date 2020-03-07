@@ -25,6 +25,7 @@
             android:layout_toRightOf="@id/bianhaoTX"
             android:hint="输入编码"
             android:textSize="20sp"
+            android:inputType="number"
             android:background="@drawable/loginedit_bg"/>
         <Button
             android:id="@+id/btn_search"
