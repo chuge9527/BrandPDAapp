@@ -22,6 +22,7 @@
             android:layout_alignParentRight="true"
             android:text="扫码"
             android:textSize="20sp"
+            android:onClick="getOutMaterial"
             />
         <EditText
             android:id="@+id/mCode"
@@ -29,6 +30,7 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/btn_search"
             android:hint="托盘条码"
+            android:text="tp_1001"
             android:inputType="number"
             android:textSize="20sp"
             android:background="@drawable/loginedit_bg"/>
