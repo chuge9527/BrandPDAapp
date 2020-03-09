@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:text="0000000"
+        android:text=""
         android:textSize="15sp"
         android:id="@+id/trayTX"/>
       </LinearLayout>
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="01.01.103"
+            android:text=""
             android:textSize="15sp"
             android:layout_toRightOf="@id/codeId"
             android:id="@+id/materialCodeTX"/>
@@ -71,11 +71,11 @@
             android:layout_height="wrap_content"
             android:text="物料名称:"
             android:textSize="15sp"/>
-        <EditText
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="斑马PDA"
+            android:text=""
             android:textSize="15sp"
             android:id="@+id/materialNameTX"/>
     </LinearLayout>
@@ -96,7 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="2"
+            android:text=""
             android:inputType="number"
             android:textSize="25sp"
             android:id="@+id/countTX"/>
@@ -118,15 +118,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="01.02.03"
+            android:text=""
             android:textSize="15sp"
             android:id="@+id/binCodeTX"/>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="10dp"
+        android:padding="10dp">
     <Button
+        android:id="@+id/btn_submit1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+
         android:layout_marginLeft="30dp"
         android:text="提   交"/>
+     <Button
+         android:id="@+id/btn_exit"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+
+         android:layout_marginLeft="30dp"
+         android:text="后   退"/>
+    </LinearLayout>
 
 </LinearLayout>

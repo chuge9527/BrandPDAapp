@@ -33,7 +33,7 @@ public class Instore1Activity extends AppCompatActivity {
     private int lenCode;
 
     private EditText materialCode,barText,goodNUmET;
-    private Button btnSearch,btnCode;
+    private Button btnSearch,btnCode,btnExit;
     private Spinner spinner1,spinner2;
 
     @Override
@@ -41,6 +41,7 @@ public class Instore1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instore1);
         //
+        btnExit = findViewById(R.id.btn_exit);
         btnSearch = findViewById(R.id.btn_search);
         btnCode = findViewById(R.id.btn_code);
         materialCode = findViewById(R.id.mCode);//查询的关键字
@@ -50,7 +51,13 @@ public class Instore1Activity extends AppCompatActivity {
         spinner1 = findViewById(R.id.material);
         spinner2 = findViewById(R.id.unit);
 
-
+        //
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         btnCode.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -76,6 +83,7 @@ public class Instore1Activity extends AppCompatActivity {
 
             }
         };
+
         handler2 = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -110,7 +118,7 @@ public class Instore1Activity extends AppCompatActivity {
     public void getRequest(View view) {
 
         String  mCodes = materialCode.getText().toString();
-        String url = "http://192.168.1.110:8080/api/getMaterialsByMaterialCode?materialCode="+mCodes;
+        String url = "http://192.168.1.104:8080/api/getMaterialsByMaterialCode?materialCode="+mCodes;
         try {
             OkHttpClient okHttpClient = new OkHttpClient();
             final Request request = new Request.Builder()
@@ -180,7 +188,7 @@ public class Instore1Activity extends AppCompatActivity {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
             spinner1.setAdapter(adapter);
-            String unit = spinner1.getSelectedItem().toString();//获取选中的值
+          //  String unit = spinner1.getSelectedItem().toString();//获取选中的值
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -188,7 +196,7 @@ public class Instore1Activity extends AppCompatActivity {
 
     //提交
     public void submitData(View view) {
-        String url2 = "http://192.168.1.110:8080/api/pdaStockInWithOrderCode";
+        String url2 = "http://192.168.1.104:8080/api/pdaStockInWithOrderCode";
 
         String good = spinner1.getSelectedItem().toString();//获取选中的值
         String[] goodSP = good.split(":");//编码和名称
