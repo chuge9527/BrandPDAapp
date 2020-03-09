@@ -8,10 +8,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -33,6 +35,7 @@ public class Instore1Activity extends AppCompatActivity {
     private int lenCode;
 
     private EditText materialCode,barText,goodNUmET;
+    private TextView materialTx;
     private Button btnSearch,btnCode,btnExit;
     private Spinner spinner1,spinner2;
 
@@ -48,6 +51,7 @@ public class Instore1Activity extends AppCompatActivity {
 
         barText = findViewById(R.id.barText);//条码
         goodNUmET =findViewById(R.id.goodnumber);//数量
+        materialTx = findViewById(R.id.materialName);
         spinner1 = findViewById(R.id.material);
         spinner2 = findViewById(R.id.unit);
 
@@ -66,6 +70,30 @@ public class Instore1Activity extends AppCompatActivity {
              //   Intent intent = new Intent(Instore1Activity.this,CodeActivity.class);
             //    startActivityForResult(intent,0x11);
                 //   startActivity(intent);
+            }
+        });
+
+        //下拉框选择
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            //当选中某一个数据项时触发该方法
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,int position, long id) {
+                //System.out.println(spinner==parent);//true
+                //System.out.println(view);
+                //String data = adapter.getItem(position);//从适配器中获取被选择的数据项
+                //String data = list.get(position);//从集合中获取被选择的数据项
+                String data = (String)spinner1.getItemAtPosition(position);//从spinner中获取被选择的数据
+                String[] codename = data.split(":");
+             //   materialCodetext.setText(codename[0]);
+               materialTx.setText(codename[1]);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
             }
         });
 
@@ -92,6 +120,7 @@ public class Instore1Activity extends AppCompatActivity {
                     Toast.makeText(Instore1Activity.this, "提交成功", Toast.LENGTH_SHORT).show();
                     barText.setText("");
                     goodNUmET.setText("");
+                    materialTx.setText("");
                 }
                 else {
                     Toast.makeText(Instore1Activity.this, "提交失败", Toast.LENGTH_SHORT).show();

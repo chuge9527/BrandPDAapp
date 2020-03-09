@@ -8,20 +8,20 @@
     <RelativeLayout
         android:id="@+id/layout01"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
         <TextView
             android:id="@+id/bianhaoTX"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="货物编号"
-            android:textSize="26sp"
+            android:textSize="20sp"
             />
         <EditText
             android:id="@+id/mCode"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@id/bianhaoTX"
             android:hint="输入编码"
             android:textSize="20sp"
@@ -30,7 +30,7 @@
         <Button
             android:id="@+id/btn_search"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@id/mCode"
             android:text="查询"
             android:textSize="20sp"
@@ -40,6 +40,7 @@
         android:id="@+id/layout02"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginTop="20dp">
 
         <Spinner
@@ -48,6 +49,11 @@
             android:layout_height="wrap_content"
             android:minWidth="26dp">
         </Spinner>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:id="@+id/materialName"/>
 
     </LinearLayout>
     <LinearLayout
@@ -100,13 +106,13 @@
             android:hint="123456789011"
             android:textSize="20sp"
             android:background="@drawable/loginedit_bg"/>
+
         <Button
             android:id="@+id/btn_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="扫一扫"
-            android:textSize="20sp"
-            />
+            android:text="扫码"
+            android:textSize="20sp" />
     </LinearLayout>
     <RelativeLayout
         android:id="@+id/layout05"
