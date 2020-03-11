@@ -4,8 +4,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="top"
     android:background="@drawable/bg1">
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/layout01"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,16 +15,16 @@
             android:id="@+id/bianhaoTX"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_weight="0"
             android:text="货物编号"
             android:textSize="20sp"
             />
         <EditText
             android:id="@+id/mCode"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/bianhaoTX"
-            android:hint="输入编码"
+            android:layout_weight="1"
+            android:hint="输入编码关键字"
             android:textSize="20sp"
             android:inputType="number"
             android:background="@drawable/loginedit_bg"/>
@@ -31,11 +32,11 @@
             android:id="@+id/btn_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/mCode"
+            android:layout_weight="0"
             android:text="查询"
             android:textSize="20sp"
             android:onClick="getRequest"/>
-    </RelativeLayout>
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/layout02"
         android:layout_width="match_parent"
@@ -68,6 +69,7 @@
             android:textSize="20sp"/>
         <Spinner
             android:id="@+id/unit"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:entries="@array/mcount"/>
@@ -79,6 +81,7 @@
             android:textSize="20sp"/>
         <EditText
             android:id="@+id/goodnumber"
+            android:layout_weight="1"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -95,14 +98,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0"
             android:text="托盘条码"
             android:textAlignment="gravity"
             android:textSize="20sp"/>
 
         <EditText
             android:id="@+id/barText"
-            android:layout_width="200dp"
+              android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:hint="123456789011"
             android:textSize="20sp"
             android:background="@drawable/loginedit_bg"/>
@@ -111,6 +116,7 @@
             android:id="@+id/btn_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0"
             android:text="扫码"
             android:textSize="20sp" />
     </LinearLayout>
