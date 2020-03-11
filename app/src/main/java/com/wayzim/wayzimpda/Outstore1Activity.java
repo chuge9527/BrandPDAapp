@@ -61,7 +61,7 @@ public class Outstore1Activity extends AppCompatActivity {
     public void getOutMaterial(View view) {
 
         String mCodes = taryCodeTX.getText().toString();
-        String url = "http://192.168.1.104:8080/api/getBin2MaterialByTrayCode?trayCode=" + mCodes;
+        String url = "http://192.168.1.103:8080/api/getBin2MaterialByTrayCode?trayCode=" + mCodes;
         try {
             OkHttpClient okHttpClient = new OkHttpClient();
             final Request request = new Request.Builder()

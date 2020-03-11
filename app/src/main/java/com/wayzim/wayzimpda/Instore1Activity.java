@@ -147,7 +147,7 @@ public class Instore1Activity extends AppCompatActivity {
     public void getRequest(View view) {
 
         String  mCodes = materialCode.getText().toString();
-        String url = "http://192.168.1.104:8080/api/getMaterialsByMaterialCode?materialCode="+mCodes;
+        String url = "http://192.168.1.103:8080/api/getMaterialsByMaterialCode?materialCode="+mCodes;
         try {
             OkHttpClient okHttpClient = new OkHttpClient();
             final Request request = new Request.Builder()
@@ -225,7 +225,7 @@ public class Instore1Activity extends AppCompatActivity {
 
     //提交
     public void submitData(View view) {
-        String url2 = "http://192.168.1.104:8080/api/pdaStockInWithOrderCode";
+        String url2 = "http://192.168.1.103:8080/api/pdaStockInWithOrderCode";
 
         String good = spinner1.getSelectedItem().toString();//获取选中的值
         String[] goodSP = good.split(":");//编码和名称

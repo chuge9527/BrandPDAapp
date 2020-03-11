@@ -199,7 +199,7 @@ public class Detail1Fragment extends Fragment {
         String mname = materialNametext.getText().toString();
         String count =  counttext.getText().toString();
         String bincode= binCodetext.getText().toString();
-        String url2 = "http://192.168.1.104:8080/api/updateBin2MaterialByTrayCode";
+        String url2 = "http://192.168.1.103:8080/api/updateBin2MaterialByTrayCode";
         // traycode=tp_1001&materialCode=01.01.212-0104&amount=10&binCode=01A0010102
         String message1 = "?traycode="+tray+"&materialCode="+mcode+"&amount="+count+"&binode="+bincode;
         String url= url2+ message1;
@@ -257,7 +257,7 @@ public class Detail1Fragment extends Fragment {
     public void getMaterial2(String code) {
 
       //  String  mCodes = materialCode.getText().toString();
-        String url = "http://192.168.1.104:8080/api/getMaterialsByMaterialCode?materialCode="+code;
+        String url = "http://192.168.1.103:8080/api/getMaterialsByMaterialCode?materialCode="+code;
         try {
             OkHttpClient okHttpClient = new OkHttpClient();
             final Request request = new Request.Builder()
