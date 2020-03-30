@@ -37,7 +37,7 @@ public class Outstore1Activity extends AppCompatActivity {
         setContentView(R.layout.activity_outstore1);
         taryCodeTX = findViewById(R.id.mCode);
 
-        detail1Fra = new Detail1Fragment();
+        detail1Fra = new Detail1Fragment();//frag加载
        getSupportFragmentManager().beginTransaction().add(R.id.frame1, detail1Fra).commit();
 
         //
