@@ -4,18 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/welcome2"
+    android:background="@drawable/bg1"
+    tools:context=".TaskManageActivity">
 
-    tools:context=".WelcomeActivity">
-   <!--
-   <ImageView
+    <GridView
+        android:id="@+id/grid_task"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageView"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/welcome2"/>
-   -->
-
+        android:numColumns="3"/>
 
 </LinearLayout>

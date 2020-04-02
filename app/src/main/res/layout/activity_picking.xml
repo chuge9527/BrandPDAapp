@@ -4,18 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/welcome2"
-
-    tools:context=".WelcomeActivity">
-   <!--
-   <ImageView
+    android:background="@drawable/bg1"
+    tools:context=".PickingActivity">
+    <GridView
+        android:id="@+id/grid_picking"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageView"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/welcome2"/>
-   -->
-
+        android:numColumns="3"/>
 
 </LinearLayout>

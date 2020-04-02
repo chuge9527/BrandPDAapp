@@ -31,10 +31,15 @@ public class MainActivity extends AppCompatActivity {
         grid_photo = (GridView) findViewById(R.id.grid_photo);
 
         mData = new ArrayList<Icon>();
+        mData.add(new Icon(R.mipmap.iv_icon_1, "入库"));//0
+        mData.add(new Icon(R.mipmap.iv_icon_2, "盘点"));
 
-        mData.add(new Icon(R.mipmap.iv_icon_5, "入库"));
-        mData.add(new Icon(R.mipmap.iv_icon_6, "盘点"));
-        mData.add(new Icon(R.mipmap.iv_icon_7, "出库"));
+        mData.add(new Icon(R.mipmap.iv_icon_3, "收货"));
+        mData.add(new Icon(R.mipmap.iv_icon_4, "上架"));
+        mData.add(new Icon(R.mipmap.iv_icon_5, "拣货"));
+        mData.add(new Icon(R.mipmap.iv_icon_6, "发货"));
+        mData.add(new Icon(R.mipmap.iv_icon_7, "库存管理"));
+        mData.add(new Icon(R.mipmap.iv_icon_1, "任务管理"));
 
         mAdapter = new MyAdapter<Icon>(mData, R.layout.item_grid_icon) {
             @Override
@@ -53,11 +58,31 @@ public class MainActivity extends AppCompatActivity {
               //  Toast.makeText(mContext, "你点击了~" + position + "~项", Toast.LENGTH_SHORT).show();
                 switch (position){
                     case 0:
-                        intent = new Intent(MainActivity.this,Instore1Activity.class);
+                        intent = new Intent(mContext ,Instore1Activity.class);
                         startActivity(intent);
                         break;
                     case 1:
-                        intent = new Intent(MainActivity.this,Outstore1Activity.class);
+                        intent = new Intent(mContext ,Outstore1Activity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        intent = new Intent(mContext ,ReceiptActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 3:
+                        intent = new Intent(mContext ,ShelvesActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 4:
+                        intent = new Intent(mContext ,PickingActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 5:
+                        intent = new Intent(mContext ,DeliverActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 6:
+                        intent = new Intent(mContext ,StockManageActivity.class);
                         startActivity(intent);
                         break;
                     default:
