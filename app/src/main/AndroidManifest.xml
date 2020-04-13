@@ -12,12 +12,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StockManageActivity" android:launchMode="singleTop"/>
-        <activity android:name=".TaskManageActivity" android:launchMode="singleTop"/>
-        <activity android:name=".DeliverActivity" android:launchMode="singleTop"/>
-        <activity android:name=".PickingActivity" android:launchMode="singleTop"/>
-        <activity android:name=".ShelvesActivity" android:launchMode="singleTop"/>
-        <activity android:name=".ReceiptActivity" android:launchMode="singleTop"/>
+        <activity android:name=".stockdetail.InventoryActivity" android:launchMode="singleTop"/>
+        <activity
+            android:name=".StockManageActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".TaskManageActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".DeliverActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".PickingActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ShelvesActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ReceiptActivity"
+            android:launchMode="singleTop" />
         <activity
             android:name=".Outstore1Activity"
             android:launchMode="singleTop" />

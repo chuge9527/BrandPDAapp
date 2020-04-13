@@ -3,10 +3,14 @@ package com.wayzim.wayzimpda;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
+import com.wayzim.wayzimpda.stockdetail.InventoryActivity;
 import com.wayzim.wayzimpda.tools.Icon;
 import com.wayzim.wayzimpda.tools.MyAdapter;
 
@@ -26,9 +30,9 @@ public class StockManageActivity extends AppCompatActivity {
         grid_stock = (GridView) findViewById(R.id.grid_stock);
 
         mData5 = new ArrayList<Icon>();
-        mData5.add(new Icon(R.mipmap.stock1, "补货"));
+        mData5.add(new Icon(R.mipmap.stock1, "盘点"));
         mData5.add(new Icon(R.mipmap.stock2, "移库"));
-        mData5.add(new Icon(R.mipmap.stock3, "盘点"));
+        mData5.add(new Icon(R.mipmap.stock3, "补货"));
         mData5.add(new Icon(R.mipmap.stock4, "养护"));
         mData5.add(new Icon(R.mipmap.stock5, "查询"));
 
@@ -40,6 +44,49 @@ public class StockManageActivity extends AppCompatActivity {
             }
         };
         grid_stock.setAdapter(mAdapter5);
+        grid_stock.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            Intent intent ;
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //  Toast.makeText(mContext, "你点击了~" + position + "~项", Toast.LENGTH_SHORT).show();
+                switch (position){
+                    case 0:
+                        intent = new Intent(mContext , InventoryActivity.class);
+                        startActivity(intent);
+                        break;
+                        /*
+                    case 1:
+                        intent = new Intent(mContext ,Outstore1Activity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        intent = new Intent(mContext ,ReceiptActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 3:
+                        intent = new Intent(mContext ,ShelvesActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 4:
+                        intent = new Intent(mContext ,PickingActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 5:
+                        intent = new Intent(mContext ,DeliverActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 6:
+                        intent = new Intent(mContext ,StockManageActivity.class);
+                        startActivity(intent);
+                        break;
+                        */
+                    default:
+
+                        break;
+                }
+
+            }
+        });
 
 
     }
