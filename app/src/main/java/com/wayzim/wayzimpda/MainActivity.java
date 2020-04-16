@@ -31,15 +31,15 @@ public class MainActivity extends AppCompatActivity {
         grid_photo = (GridView) findViewById(R.id.grid_photo);
 
         mData = new ArrayList<Icon>();
-        mData.add(new Icon(R.mipmap.iv_icon_1, "入库"));//0
-        mData.add(new Icon(R.mipmap.iv_icon_2, "盘点"));
+        mData.add(new Icon(R.mipmap.iv_icon_1, "入库1"));//0
+        mData.add(new Icon(R.mipmap.iv_icon_2, "出库2"));
 
         mData.add(new Icon(R.mipmap.iv_icon_3, "收货"));
         mData.add(new Icon(R.mipmap.iv_icon_4, "上架"));
-        mData.add(new Icon(R.mipmap.iv_icon_5, "拣货"));
+        mData.add(new Icon(R.mipmap.iv_icon_5, "拣货"));//4
         mData.add(new Icon(R.mipmap.iv_icon_6, "发货"));
         mData.add(new Icon(R.mipmap.iv_icon_7, "库存管理"));
-        mData.add(new Icon(R.mipmap.iv_icon_1, "任务管理"));
+        mData.add(new Icon(R.mipmap.iv_icon_1, "无源入库"));
 
         mAdapter = new MyAdapter<Icon>(mData, R.layout.item_grid_icon) {
             @Override
@@ -83,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 6:
                         intent = new Intent(mContext ,StockManageActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 7:
+                        intent = new Intent(mContext ,InstockNoOrderActivity.class);
                         startActivity(intent);
                         break;
                     default:

@@ -1,66 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:gravity="top"
     android:background="@drawable/bg1"
-    tools:context=".Instore1Activity">
+    tools:context=".InstockNoOrderActivity">
     <LinearLayout
-        android:id="@+id/layout01"
+        android:id="@+id/layout_nooder01"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
         <TextView
-    android:id="@+id/bianhaoTX"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_weight="0"
-    android:text="货物编号"
-    android:textSize="20sp"
-    />
-    <EditText
-        android:id="@+id/mCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:hint="输入编码关键字"
-        android:textSize="20sp"
-        android:inputType="number"
-        android:background="@drawable/loginedit_bg"/>
-    <Button
-        android:id="@+id/btn_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="查询"
-        android:textSize="20sp"
-        android:onClick="getRequest"/>
-</LinearLayout>
+            android:id="@+id/bianhaoTX2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="货物编号"
+            android:textSize="20sp"
+            />
+        <EditText
+            android:id="@+id/mCode2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="输入编码关键字"
+            android:textSize="20sp"
+            android:inputType="number"
+            android:background="@drawable/loginedit_bg"/>
+        <Button
+            android:id="@+id/btn_search2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="查询2"
+            android:textSize="20sp"
+            android:onClick="getRequest2"
+            />
+    </LinearLayout>
     <LinearLayout
-        android:id="@+id/layout02"
+        android:id="@+id/layout_nooder02"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="20dp">
 
         <Spinner
-            android:id="@+id/material"
+            android:id="@+id/material2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:spinnerMode="dialog"
             android:minWidth="150dp">
         </Spinner>
         <TextView
+            android:id="@+id/materialName2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:id="@+id/materialName"/>
+           />
 
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/layout03"
+        android:id="@+id/layout_nooder03"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
@@ -70,7 +73,7 @@
             android:text="货物单位"
             android:textSize="20sp"/>
         <Spinner
-            android:id="@+id/unit"
+            android:id="@+id/unit2"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -83,7 +86,7 @@
             android:text="货物数量"
             android:textSize="20sp"/>
         <EditText
-            android:id="@+id/goodnumber"
+            android:id="@+id/goodnumber2"
             android:layout_weight="1"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
@@ -93,8 +96,9 @@
             android:background="@drawable/loginedit_bg"/>
 
     </LinearLayout>
+
     <LinearLayout
-        android:id="@+id/layout04"
+        android:id="@+id/layout_nooder09"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
@@ -102,49 +106,77 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:text="托盘条码"
+            android:text="入库任务号"
             android:textAlignment="gravity"
             android:textSize="20sp"/>
 
-        <EditText
-            android:id="@+id/barText"
-              android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/orderText2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="123456789011"
+            android:hint="wms创建的入库任务"
             android:textSize="20sp"
             android:background="@drawable/loginedit_bg"/>
 
-        <Button
-            android:id="@+id/btn_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="扫码"
-            android:textSize="20sp" />
     </LinearLayout>
+
+    <LinearLayout
+    android:id="@+id/layout_nooder04"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="托盘条码"
+        android:textAlignment="gravity"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/barText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="0000000000000"
+        android:textSize="20sp"
+        android:background="@drawable/loginedit_bg"/>
+
+</LinearLayout>
     <RelativeLayout
-        android:id="@+id/layout05"
+        android:id="@+id/layout_nooder05"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
         <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="上架准备"
+        android:textSize="20sp"
+            android:onClick="submitData2"
+       />
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="提交"
+            android:layout_toLeftOf="@+id/btn_exit2"
+            android:text="发送"
             android:textSize="20sp"
-            android:onClick="submitData"/>
+            android:onClick="submitOrder"
+            />
         <Button
-            android:id="@+id/btn_exit"
+            android:id="@+id/btn_exit2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="后退"
             android:textSize="20sp"/>
     </RelativeLayout>
+
+
 
 
 </LinearLayout>
