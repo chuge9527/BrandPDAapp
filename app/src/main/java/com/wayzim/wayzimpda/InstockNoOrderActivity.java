@@ -141,7 +141,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     public void getRequest2(View view) {
 
         String  mCodes = materialCode.getText().toString();
-        String url = "http://192.168.1.103:8080/api/getMaterialsByMaterialCode?materialCode="+mCodes;
+        String url = "http://192.168.1.109:8080/api/getMaterialsByMaterialCode?materialCode="+mCodes;
         try {
             OkHttpClient okHttpClient = new OkHttpClient();
             final Request request = new Request.Builder()
@@ -221,7 +221,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
 
     //上架准备
     public void submitData2(View view) {
-        String url2 = "http://192.168.1.103:8080/api/realTimeStockIn/initEmptyStockInOrderWithParams";
+        String url2 = "http://192.168.1.109:8080/api/realTimeStockIn/initEmptyStockInOrderWithParams";
 
         String good = spinner1.getSelectedItem().toString();//获取选中的值
         String[] goodSP = good.split(":");//编码和名称
@@ -244,7 +244,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
                 json.put("materialCode", goodSP[0]);
                 json.put("materialAmount", countNum );
                 json.put("unit", unitGoods);
-                json.put("isNeedTray","true");
+                json.put("isNeedTray",false);
                 Log.d("wy", String.valueOf(json));
                 RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
                 final Request request = new Request.Builder()
@@ -301,7 +301,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     //
     //提交入库任务号
     public void submitOrder(View view) {
-        String url2 = "http://192.168.1.103:8080/api/realTimeStockIn/appendTrayCode";
+        String url2 = "http://192.168.1.109:8080/api/realTimeStockIn/appendTrayCode";
 
 
         String orderNum = orderText.getText().toString();//入库任务号

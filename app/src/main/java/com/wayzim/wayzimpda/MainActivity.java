@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mData.add(new Icon(R.mipmap.iv_icon_6, "发货"));
         mData.add(new Icon(R.mipmap.iv_icon_7, "库存管理"));
         mData.add(new Icon(R.mipmap.iv_icon_1, "无源入库"));
+        mData.add(new Icon(R.mipmap.iv_icon_5, "有源入库"));//4
 
         mAdapter = new MyAdapter<Icon>(mData, R.layout.item_grid_icon) {
             @Override
@@ -87,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 7:
                         intent = new Intent(mContext ,InstockNoOrderActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 8:
+                        intent = new Intent(mContext ,InstockWithOrderActivity.class);
                         startActivity(intent);
                         break;
                     default:

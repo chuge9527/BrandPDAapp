@@ -163,7 +163,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/btn_exit2"
-            android:text="发送"
+            android:text="补托盘码"
             android:textSize="20sp"
             android:onClick="submitOrder"
             />
