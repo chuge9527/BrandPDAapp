@@ -8,11 +8,18 @@
     android:gravity="top"
     android:background="@drawable/bg1"
     tools:context=".InstockNoOrderActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="无源入库--物料上架"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:layout_marginTop="2dp"/>
     <LinearLayout
         android:id="@+id/layout_nooder01"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="30dp">
         <TextView
             android:id="@+id/bianhaoTX2"
             android:layout_width="wrap_content"
@@ -45,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="30dp">
 
         <Spinner
             android:id="@+id/material2"
@@ -59,6 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:layout_marginTop="15dp"
            />
 
     </LinearLayout>
@@ -100,7 +108,7 @@
         android:id="@+id/layout_nooder005"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="30dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -128,7 +136,7 @@
         android:id="@+id/layout_nooder04"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="30dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -152,7 +160,7 @@
         android:id="@+id/layout_nooder09"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="30dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -171,6 +179,38 @@
             android:background="@drawable/loginedit_bg"/>
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="上架准备"
+            android:textSize="20sp"
+            android:onClick="submitData2"
+            />
+        <Button
+            android:id="@+id/btn_sendcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="25dp"
+            android:layout_marginLeft="25dp"
+            android:text="补托盘码"
+            android:textSize="20sp"
+            android:onClick="submitOrder"
+            />
+        <Button
+            android:id="@+id/btn_exit2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="后退"
+            android:textSize="20sp"/>
+    </LinearLayout>
+    <!--
     <RelativeLayout
         android:id="@+id/layout_nooder05"
         android:layout_width="match_parent"
@@ -203,6 +243,6 @@
             android:text="后退"
             android:textSize="20sp"/>
     </RelativeLayout>
-
+   -->
 
 </LinearLayout>

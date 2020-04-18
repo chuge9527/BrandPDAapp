@@ -12,8 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".InstockWithOrderActivity"></activity>
-        <activity android:name=".InstockNoOrderActivity" />
+        <activity android:name=".InstockWithOrderActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".InstockNoOrderActivity"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".stockdetail.InventoryActivity"
             android:launchMode="singleTop" />

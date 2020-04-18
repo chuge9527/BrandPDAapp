@@ -2,18 +2,29 @@ package com.wayzim.wayzimpda;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import com.wayzim.wayzimpda.tools.Group;
+import com.wayzim.wayzimpda.tools.Item;
+import com.wayzim.wayzimpda.tools.MyBaseExpandableListAdapter;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -26,31 +37,59 @@ import okhttp3.Response;
 public class InstockWithOrderActivity extends AppCompatActivity {
     private Button orderSearch;
     private EditText orderNum;
-    private String data_order;
     private Handler handler;
+    private Context mContext;
+
+    private String data_order;
+    private String[] list_OrderCode;//查询的json数组
+    private String[] list_taskCode;
+    private String[] list_taskCode2;
+    private ArrayList<Group> gData = null;
+    private ArrayList<ArrayList<Item>> iData = null;
+
+    private ExpandableListView exlist_lol;
+    private MyBaseExpandableListAdapter myAdapter = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instock_with_order);
 
+        mContext = InstockWithOrderActivity.this;
+        exlist_lol = (ExpandableListView) findViewById(R.id.exlist_lol);
         orderSearch = (Button) findViewById(R.id.btn_search2);
         orderNum = (EditText)findViewById(R.id.orderNum);
 
 
-        //
+        //显示数据
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if(msg.what == 0x0002){
+                    Toast.makeText(InstockWithOrderActivity.this,"json数据失败",Toast.LENGTH_SHORT).show();
+                }else {
+                    showOrderinfo();//显示数据到spinner上了
+                }
+
+            }
+        };
+
     }
 
     //获取入库任务信息，给data_order
-    public void getRequest2(View view) {
-        String url = "http://localhost:8080/api/pdaQueryStockIn/getStockInOrderWithDetailPerTray";
+    public void order_request(View view) {
+        String url = "http://192.168.1.101:8080/api/pdaQueryStockIn/getStockInOrderWithDetailPerTray";
         try {
             String  pageSize = orderNum .getText().toString();//每页显示的条数
+            if(pageSize.equals("")){
+                pageSize = "10";
+            }
+
             OkHttpClient okHttpClient = new OkHttpClient();
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             JSONObject json = new JSONObject();
             json.put("pageSize", pageSize);
-            json.put("currentPage", 1);
-            Log.d("wy", String.valueOf(json));
+            json.put("currentPage", 1);//默认显示第一页
+           // Log.d("wy", String.valueOf(json));
             RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
             final Request request = new Request.Builder()
                     .url(url)
@@ -60,7 +99,6 @@ public class InstockWithOrderActivity extends AppCompatActivity {
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    Log.d("wy", "onFailure: ");
                     Toast.makeText(InstockWithOrderActivity.this, "Http失败", Toast.LENGTH_SHORT).show();
                 }
 
@@ -68,11 +106,10 @@ public class InstockWithOrderActivity extends AppCompatActivity {
                 public void onResponse(Call call, Response response) throws IOException {
 
                     String json = response.body().string();//!!!只能调用一次!!!
-                    Log.d("wy", "onResponse: " + json);
                     try {
                         //Json数据的处理
                         JSONObject jsonObject = new JSONObject(json);
-                        data_order = jsonObject.getString("list");
+                        data_order = jsonObject.getString("data");
 
                         new Thread(new Runnable() {
                             @Override
@@ -95,8 +132,66 @@ public class InstockWithOrderActivity extends AppCompatActivity {
         }
         catch (Exception e){
             e.printStackTrace();
-            Toast.makeText(InstockWithOrderActivity.this, "Http链接错误", Toast.LENGTH_LONG).show();
+            Toast.makeText(InstockWithOrderActivity.this, "Http连接失败", Toast.LENGTH_LONG).show();
+        }
+        //
+    }
+
+    //显示ListView数据
+    private void showOrderinfo(){
+        try {
+            //下拉菜单的数据源list，如何填充arrayAdapter
+            JSONObject jO = new JSONObject(data_order);
+            JSONArray jsonArray = new JSONArray(jO.getString("list"));//list数据
+
+            int length = jsonArray.length();//入库单 的数量
+            Log.d("wy1", String.valueOf(length));//ok入库单的数量 2
+            list_OrderCode = new String[length];//存 入库单号
+
+            gData = new ArrayList<Group>();
+            iData = new ArrayList<ArrayList<Item>>();
+
+            for (int i = 0; i < length; i++) {
+                JSONObject jsonObject1 = jsonArray.getJSONObject(i);//i从零开始
+
+                list_OrderCode[i] ="入库单号:" + jsonObject1.getString("stockInOrderCode");
+                gData.add(new Group(list_OrderCode[i]));
+                Log.d("wy2",list_OrderCode[i]);//
+
+                JSONArray jsa = new JSONArray(jsonObject1.getString("stockInDetailsPerTray"));
+                int task_len = jsa.length();//任务号的数量
+                Log.d("wy3",String.valueOf(task_len));//任务号的数量
+                list_taskCode = new String[task_len];
+                list_taskCode2 = new String[task_len];
+                ArrayList<Item> lData =  new ArrayList<Item>();
+                for (int j = 0; j < task_len; j++) {
+                    JSONObject jsonObject2 = jsa.getJSONObject(j);//i从零开始
+                    list_taskCode[j] ="任务号:" + jsonObject2.getString("taskNo");
+                    list_taskCode2[j] ="物料名称:"+jsonObject2.getString("materialName");
+                    lData.add(new Item(list_taskCode[j],list_taskCode2[j]));
+
+                }
+                iData.add(lData);
+            }
+            //
+            //数据准备
+            myAdapter = new MyBaseExpandableListAdapter(gData,iData,mContext);
+            exlist_lol.setAdapter(myAdapter);
+            //为列表设置点击事件
+            exlist_lol.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                    Toast.makeText(mContext, "你点击了：" + iData.get(groupPosition).get(childPosition).getiName(), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
+    //
 
 }

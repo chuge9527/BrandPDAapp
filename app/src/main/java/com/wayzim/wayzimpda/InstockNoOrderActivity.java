@@ -109,8 +109,6 @@ public class InstockNoOrderActivity extends AppCompatActivity {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                //  Toast.makeText(getApplicationContext(), info, Toast.LENGTH_LONG).show();
-                //  Toast.makeText(Instore1Activity.this,info[1],Toast.LENGTH_SHORT).show();
                 if(msg.what == 0x0002){
                     Toast.makeText(InstockNoOrderActivity.this,"json数据失败",Toast.LENGTH_SHORT).show();
                 }else {
@@ -160,7 +158,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     public void getRequest2(View view) {
 
         String  mCodes = materialCode.getText().toString();
-        String url = "http://192.168.0.6:8080/api/getMaterialsByMaterialCode?materialCode="+mCodes;
+        String url = "http://192.168.1.101:8080/api/getMaterialsByMaterialCode?materialCode="+mCodes;
         try {
             OkHttpClient okHttpClient = new OkHttpClient();
             final Request request = new Request.Builder()
@@ -239,7 +237,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     //
     //上架准备
     public void submitData2(View view) {
-        String url2 = "http://192.168.0.6:8080/api/realTimeStockIn/initEmptyStockInOrderWithParams";
+        String url2 = "http://192.168.1.101:8080/api/realTimeStockIn/initEmptyStockInOrderWithParams";
         String goodname = materialTx.getText().toString();//名称
         String countNum = goodNUmET.getText().toString();//数量
         String unitGoods = spinner2.getSelectedItem().toString();//单位
@@ -320,7 +318,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     //
     //补上托盘码，提交入库任务号
     public void submitOrder(View view) {
-        String url2 = "http://192.168.0.6:8080/api/realTimeStockIn/appendTrayCode";
+        String url2 = "http://192.168.1.101:8080/api/realTimeStockIn/appendTrayCode";
 
         String orderNum = orderText.getText().toString();//入库任务号
         String barcode = barText.getText().toString(); //托盘条码
