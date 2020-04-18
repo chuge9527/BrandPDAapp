@@ -26,11 +26,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="入库单数量"
+        android:hint="查询数量"
+        android:text="5"
         android:textSize="20sp"
         android:inputType="number"
         android:background="@drawable/loginedit_bg"/>
-        <EditText
+     <EditText
             android:id="@+id/materialName3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

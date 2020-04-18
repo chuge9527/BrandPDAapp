@@ -96,7 +96,58 @@
             android:background="@drawable/loginedit_bg"/>
 
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_nooder005"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="请求托盘"
+            android:textAlignment="gravity"
+            android:textSize="20sp"/>
+        <CheckBox
+            android:id="@+id/check_traycode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:checked="true" />
+        <TextView
+            android:id="@+id/needtray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="请求托盘，须补发托盘条码"
+            android:textAlignment="gravity"
+            android:textSize="15sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_nooder04"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="托盘条码"
+            android:textAlignment="gravity"
+            android:textSize="20sp"/>
 
+        <EditText
+            android:id="@+id/barText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="0000 0000 0000"
+            android:textSize="20sp"
+            android:background="@drawable/loginedit_bg"/>
+
+
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/layout_nooder09"
         android:layout_width="match_parent"
@@ -115,35 +166,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="wms创建的入库任务"
+            android:hint="WMS发送的入库任务"
             android:textSize="20sp"
             android:background="@drawable/loginedit_bg"/>
 
     </LinearLayout>
-
-    <LinearLayout
-    android:id="@+id/layout_nooder04"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="20dp">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="托盘条码"
-        android:textAlignment="gravity"
-        android:textSize="20sp"/>
-
-    <EditText
-        android:id="@+id/barText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:hint="0000000000000"
-        android:textSize="20sp"
-        android:background="@drawable/loginedit_bg"/>
-
-</LinearLayout>
     <RelativeLayout
         android:id="@+id/layout_nooder05"
         android:layout_width="match_parent"
@@ -160,6 +187,7 @@
             android:onClick="submitData2"
        />
         <Button
+            android:id="@+id/btn_sendcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/btn_exit2"
@@ -175,8 +203,6 @@
             android:text="后退"
             android:textSize="20sp"/>
     </RelativeLayout>
-
-
 
 
 </LinearLayout>
