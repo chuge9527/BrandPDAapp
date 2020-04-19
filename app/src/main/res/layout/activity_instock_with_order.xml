@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+
     android:orientation="vertical"
     android:gravity="top"
     android:background="@drawable/bg1"
@@ -50,10 +51,15 @@
         android:onClick="order_request"
         />
 </LinearLayout>
+
     <ExpandableListView
         android:id="@+id/exlist_lol"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:childDivider="#E02D2F"/>
+     <ScrollView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:id="@+id/frame2"/>
 
 </LinearLayout>

@@ -8,13 +8,8 @@
     android:gravity="top"
     android:background="@drawable/bg1"
     tools:context=".InstockNoOrderActivity">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="无源入库--物料上架"
-        android:textAlignment="center"
-        android:textSize="25sp"
-        android:layout_marginTop="2dp"/>
+
+
     <LinearLayout
         android:id="@+id/layout_nooder01"
         android:layout_width="match_parent"

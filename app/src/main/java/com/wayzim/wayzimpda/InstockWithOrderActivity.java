@@ -49,6 +49,10 @@ public class InstockWithOrderActivity extends AppCompatActivity {
 
     private ExpandableListView exlist_lol;
     private MyBaseExpandableListAdapter myAdapter = null;
+    private Detail2Fragment detail2Fra;
+
+    private JSONObject data_detail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,8 @@ public class InstockWithOrderActivity extends AppCompatActivity {
         orderSearch = (Button) findViewById(R.id.btn_search2);
         orderNum = (EditText)findViewById(R.id.orderNum);
 
+        detail2Fra = new Detail2Fragment();//frag加载
+        getSupportFragmentManager().beginTransaction().add(R.id.frame2, detail2Fra).commit();
 
         //显示数据
         handler = new Handler() {
@@ -67,7 +73,7 @@ public class InstockWithOrderActivity extends AppCompatActivity {
                 if(msg.what == 0x0002){
                     Toast.makeText(InstockWithOrderActivity.this,"json数据失败",Toast.LENGTH_SHORT).show();
                 }else {
-                    showOrderinfo();//显示数据到spinner上了
+                    showOrderinfo();//显示数据到listview上了
                 }
 
             }
@@ -77,7 +83,7 @@ public class InstockWithOrderActivity extends AppCompatActivity {
 
     //获取入库任务信息，给data_order
     public void order_request(View view) {
-        String url = "http://192.168.1.101:8080/api/pdaQueryStockIn/getStockInOrderWithDetailPerTray";
+        String url = "http://120.27.143.134:8080/api/pdaQueryStockIn/getStockInOrderWithDetailPerTray";
         try {
             String  pageSize = orderNum .getText().toString();//每页显示的条数
             if(pageSize.equals("")){
@@ -154,7 +160,7 @@ public class InstockWithOrderActivity extends AppCompatActivity {
             for (int i = 0; i < length; i++) {
                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);//i从零开始
 
-                list_OrderCode[i] ="入库单号:" + jsonObject1.getString("stockInOrderCode");
+                list_OrderCode[i] ="入库单:" + jsonObject1.getString("stockInOrderCode");
                 gData.add(new Group(list_OrderCode[i]));
                 Log.d("wy2",list_OrderCode[i]);//
 
@@ -167,7 +173,7 @@ public class InstockWithOrderActivity extends AppCompatActivity {
                 for (int j = 0; j < task_len; j++) {
                     JSONObject jsonObject2 = jsa.getJSONObject(j);//i从零开始
                     list_taskCode[j] ="任务号:" + jsonObject2.getString("taskNo");
-                    list_taskCode2[j] ="物料名称:"+jsonObject2.getString("materialName");
+                    list_taskCode2[j] =jsonObject2.getString("materialName");//物料名称
                     lData.add(new Item(list_taskCode[j],list_taskCode2[j]));
 
                 }
@@ -182,10 +188,23 @@ public class InstockWithOrderActivity extends AppCompatActivity {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                     Toast.makeText(mContext, "你点击了：" + iData.get(groupPosition).get(childPosition).getiName(), Toast.LENGTH_SHORT).show();
+                   //数据传送json到data_detail
+                    data_detail = new JSONObject();
+                    try {
+                        data_detail.put("instock",gData.get(groupPosition).getgName());//入库单
+                        data_detail.put("task_id",iData.get(groupPosition).get(childPosition).getiId());//任务号
+                        data_detail.put("materialName",iData.get(groupPosition).get(childPosition).getiName());//物料名称
+                        //物料编码
+                        //数量
+                        showinfo2();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                     return true;
                 }
             });
-
 
 
         }catch (Exception e){
@@ -193,5 +212,20 @@ public class InstockWithOrderActivity extends AppCompatActivity {
         }
     }
     //
+    //显示物料详情
+    private void showListSelect(int groupPosition, int childPosition){
 
+    }
+
+    //传送数据
+    public void  showinfo2(){
+        Bundle bundle = new Bundle();
+        bundle.putString("data",data_detail.toString());
+        Detail2Fragment detail2Fra2 = new Detail2Fragment();
+        detail2Fra2.setArguments(bundle);//数据传递到fragment中
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame2,detail2Fra2).commit();
+
+
+    }
 }

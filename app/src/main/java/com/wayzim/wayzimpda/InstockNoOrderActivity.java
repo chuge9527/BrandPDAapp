@@ -51,7 +51,15 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instock_no_order);
-        //
+        /*
+            <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="无源入库--物料上架"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:layout_marginTop="2dp"/>
+        */
         btnExit = findViewById(R.id.btn_exit2);
         btnSearch = findViewById(R.id.btn_search2);
         check_traycode =findViewById(R.id.check_traycode);//是否需要托盘
