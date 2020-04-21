@@ -4,14 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:padding="5dp">
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="入库单号："
+        android:textSize="22sp"/>
     <TextView
         android:id="@+id/tv_group_name"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:gravity="center_vertical"
         android:paddingLeft="30dp"
-        android:text="入库单号"
+        android:text="123"
         android:textStyle="bold"
         android:textSize="20sp" />
 

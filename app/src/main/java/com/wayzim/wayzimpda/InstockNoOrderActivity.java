@@ -2,28 +2,34 @@ package com.wayzim.wayzimpda;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.wayzim.wayzimpda.tools.SharedHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,13 +38,14 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 
 public class InstockNoOrderActivity extends AppCompatActivity {
     private Handler handler,handler2,handler3;
-    private  String data1,data2;//查询货物的结果,提交的结果
-    private String[] info;//查询的json数组
-    private int lenCode;
+    private  String data_spinner1 ,data_order;//查询货物的结果,提交的结果
+    private String[] spinner_info;//查询的json数组
+
 
     private EditText materialCode,barText,goodNUmET;
     private TextView materialTx,orderText,needTary;
@@ -47,31 +54,35 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     private CheckBox check_traycode;
     private Button  sendTrayCode;
 
+    private SharedHelper sh;
+    private Context aContext;
+    private String wms_URl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instock_no_order);
-        /*
-            <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="无源入库--物料上架"
-        android:textAlignment="center"
-        android:textSize="25sp"
-        android:layout_marginTop="2dp"/>
-        */
+
+        //读取WMS的IP
+        aContext = getApplicationContext();
+        sh = new SharedHelper(aContext);
+        Map<String,String> dataMap = sh.readURL();
+        wms_URl ="http://"+dataMap.get("urlWMS");
+
         btnExit = findViewById(R.id.btn_exit2);
         btnSearch = findViewById(R.id.btn_search2);
-        check_traycode =findViewById(R.id.check_traycode);//是否需要托盘
-        needTary = findViewById(R.id.needtray);
+        check_traycode =findViewById(R.id.check_traycode2);//是否需要托盘
+        needTary = findViewById(R.id.needtray);//是否需要托盘
         materialCode = findViewById(R.id.mCode2);//查询的关键字
-        barText = findViewById(R.id.barText2);//托盘条码
+        barText = findViewById(R.id.trayBarCode2);//托盘条码
         goodNUmET =findViewById(R.id.goodnumber2);//数量
         materialTx = findViewById(R.id.materialName2);//名称
         orderText = findViewById(R.id.orderText2);//任务单号
         sendTrayCode =findViewById(R.id.btn_sendcode);//补托盘码按钮
         spinner1 = findViewById(R.id.material2);
         spinner2 = findViewById(R.id.unit2);
+
+
 
         //是否需要托盘
      check_traycode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -85,6 +96,45 @@ public class InstockNoOrderActivity extends AppCompatActivity {
              }
          }
      });
+     // enter查询货物
+     materialCode.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            /**
+             * 参数说明
+             * @param v 被监听的对象
+             * @param actionId  动作标识符,如果值等于EditorInfo.IME_NULL，则回车键被按下。
+             * @param event    如果由输入键触发，这是事件；否则，这是空的(比如非输入键触发是空的)。
+             * @return 返回你的动作
+             */
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    Log.i("---","搜索操作执行");
+                    getRequest2(v);
+                }
+                return false;
+            }
+        });
+        // 条码限制扫一次
+        barText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            /**
+             * 参数说明
+             * @param v 被监听的对象
+             * @param actionId  动作标识符,如果值等于EditorInfo.IME_NULL，则回车键被按下。
+             * @param event    如果由输入键触发，这是事件；否则，这是空的(比如非输入键触发是空的)。
+             * @return 返回你的动作
+             */
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    Log.i("---","搜索操作执行");
+
+                   // barText.setCursorVisible(false);//隐藏光标,还可输入的
+                    barText.clearFocus();//失去焦点
+
+                }
+                return false;
+            }
+        });
 
 
         //退出
@@ -120,19 +170,35 @@ public class InstockNoOrderActivity extends AppCompatActivity {
                 if(msg.what == 0x0002){
                     Toast.makeText(InstockNoOrderActivity.this,"json数据失败",Toast.LENGTH_SHORT).show();
                 }else {
-                    showinfo();//显示数据到spinner上了
+                    showSpinnerInfo();//显示数据到spinner上了
                 }
 
             }
         };
-        //上架准备 显示返回的任务号
+        //上架准备 显示返回的入库单号
         handler2 = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 //  Toast.makeText(getApplicationContext(), info, Toast.LENGTH_LONG).show();
                 if(msg.what == 0x0001) {
-                    Toast.makeText(InstockNoOrderActivity.this, "请扫托盘号", Toast.LENGTH_SHORT).show();
-                    orderText.setText(data2);
+                    boolean needtray2 = check_traycode.isChecked(); //是否需要托盘
+                    if(needtray2) {
+                        //需要补码
+                        orderText.setText(data_order);
+                        materialTx.setText("");//防止上架准备重复提交
+                        //需要补托盘码,按钮颜色改变
+                        sendTrayCode.setBackgroundColor(Color.parseColor("#AA6600"));
+                        Toast.makeText(InstockNoOrderActivity.this, "请扫托盘号", Toast.LENGTH_LONG).show();
+                    }else {
+                        //不需要补码，完成上架
+                        barText.setText("");//托盘条码
+                        goodNUmET.setText("");
+                        materialTx.setText("");
+                        orderText.setText("");
+                        Toast.makeText(InstockNoOrderActivity.this, "上架成功", Toast.LENGTH_LONG).show();
+
+                    }
+
                 }
                 else {
                     Toast.makeText(InstockNoOrderActivity.this, "请求托盘失败", Toast.LENGTH_SHORT).show();
@@ -140,7 +206,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
 
             }
         };
-        //上交完成 清空表单
+        //补码完成 清空表单
         handler3 = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -166,32 +232,39 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     public void getRequest2(View view) {
 
         String  mCodes = materialCode.getText().toString();
-        String url = "http://192.168.1.101:8080/api/getMaterialsByMaterialCode?materialCode="+mCodes;
+        String url = wms_URl+":8080/api/getMaterialsByMaterialCode?materialCode="+mCodes;
+     //   String url = "http://120.27.143.134:8080/api/getMaterialsByMaterialCode?materialCode=2";
         try {
-            OkHttpClient okHttpClient = new OkHttpClient();
+            OkHttpClient okHttpClient = new OkHttpClient();//.addHeader("Connection", "close")
             final Request request = new Request.Builder()
                     .url(url)
                     .get()//默认就是GET请求，可以不写
                     .build();
+
+
             Call call = okHttpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    Log.d("wy", "onFailure: ");
-                    Toast.makeText(InstockNoOrderActivity.this, "Http失败", Toast.LENGTH_SHORT).show();
+                    Log.d("无源入库，物料编码查询名称", "onFailure: call失败");
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            handler.sendEmptyMessage(0x0002);
+                        }
+                    }).start();
+//                    Toast.makeText(InstockNoOrderActivity.this, "Http失败", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-
                     String json = response.body().string();//!!!只能调用一次!!!
-                    Log.d("wy", "onResponse: " + json);
+                    Log.d("无源入库，物料编码查询名称", "onResponse: " + json);
                     try {
                         //Json数据的处理
                         JSONObject jsonObject = new JSONObject(json);
-                        data1 = jsonObject.getString("data");
+                        data_spinner1 = jsonObject.getString("data");
                         //  Log.d("data:", data1);
-
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -199,14 +272,12 @@ public class InstockNoOrderActivity extends AppCompatActivity {
                             }
                         }).start();
                     } catch (JSONException e) {
-
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 handler.sendEmptyMessage(0x0002);
                             }
                         }).start();
-
 
                     }
                 }
@@ -219,37 +290,36 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     }
     //
     //显示下拉框数据
-    private void showinfo(){
+    private void showSpinnerInfo(){
         try {
             //下拉菜单的数据源list，如何填充arrayAdapter
 
-            JSONArray jsonArray = new JSONArray(data1);
+            JSONArray jsonArray = new JSONArray(data_spinner1);
             int length = jsonArray.length();
-            lenCode = length;
-            info = new String[length];
+          //  lenCode = length;//记录长度
+            spinner_info = new String[length];
             for (int i = 0; i < length; i++) {
                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);//i从零开始
-
-                info[i] = jsonObject1.getString("materialCode") + ":" + jsonObject1.getString("materialName");
+                spinner_info[i] = jsonObject1.getString("materialCode") + ":" + jsonObject1.getString("materialName");
             }
             //下拉菜单
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, info);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinner_info);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
             spinner1.setAdapter(adapter);
             //  String unit = spinner1.getSelectedItem().toString();//获取选中的值
         }catch (Exception e){
             e.printStackTrace();
+            Log.d("spinner1填充物料编码物料名称","Failure");
         }
     }
     //
     //上架准备
     public void submitData2(View view) {
-        String url2 = "http://192.168.1.101:8080/api/realTimeStockIn/initEmptyStockInOrderWithParams";
-        String goodname = materialTx.getText().toString();//名称
+        String url2 = wms_URl+":8080/api/realTimeStockIn/initEmptyStockInOrderWithParams";
+        String materialName = materialTx.getText().toString();//名称
         String countNum = goodNUmET.getText().toString();//数量
         String unitGoods = spinner2.getSelectedItem().toString();//单位
-        String barcode = barText.getText().toString(); //托盘条码
+        String trayCode = barText.getText().toString(); //托盘条码
         boolean needtray = check_traycode.isChecked(); //是否需要托盘
         //okhttp
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -258,7 +328,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
         try{
             String good = spinner1.getSelectedItem().toString();//获取sipnner的值
             String[] goodSP = good.split(":");//编码和名称
-            if (countNum.equals("") || goodname.equals("")) {
+            if (countNum.equals("") || materialName.equals("")) {
                 Toast.makeText(InstockNoOrderActivity.this, "数据不完整！！！", Toast.LENGTH_LONG).show();
             } else {
                 json.put("materialName", goodSP[1]);
@@ -269,10 +339,9 @@ public class InstockNoOrderActivity extends AppCompatActivity {
                 RequestBody requestBody;
                 if(needtray){
                     requestBody = RequestBody.create(JSON, String.valueOf(json));
-                    //需要补托盘码,按钮颜色改变
-                    sendTrayCode.setBackgroundColor(Color.parseColor("#AA6600"));
+
                 }else{
-                    json.put("trayCode",barcode);//没请求托盘，输入托盘
+                    json.put("trayCode",trayCode);//没请求托盘，输入托盘码
                     requestBody = RequestBody.create(JSON, String.valueOf(json));
                 }
                 final Request request = new Request.Builder()
@@ -283,19 +352,16 @@ public class InstockNoOrderActivity extends AppCompatActivity {
                 call.enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        //Log.d("wy", "onFailure: ");
-                        Toast.makeText(InstockNoOrderActivity.this, "Http失败", Toast.LENGTH_SHORT).show();
+                        Log.d("无源入库，发送上架物料信息", "onFailure:无返回？ ");
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-
                         String json = response.body().string();//!!!只能调用一次!!!
                         //  Log.d("wy", "onResponse: " + json);
                         try {
                             String js1 = new JSONObject(json).getString("data");
-                            data2 = new JSONObject(js1).getString("stockInOrderCode");
-
+                            data_order = new JSONObject(js1).getString("stockInOrderCode");
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -317,7 +383,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
             }
         }catch (Exception e){
             e.printStackTrace();
-            Toast.makeText(InstockNoOrderActivity.this, "请选择物料", Toast.LENGTH_LONG).show();
+            Toast.makeText(InstockNoOrderActivity.this, "oKhttp:上架准备失败", Toast.LENGTH_LONG).show();
         }
 
 
@@ -326,22 +392,21 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     //
     //补上托盘码，提交入库任务号
     public void submitOrder(View view) {
-        String url2 = "http://192.168.1.101:8080/api/realTimeStockIn/appendTrayCode";
+        String url2 = wms_URl+":8080/api/realTimeStockIn/appendTrayCode";
 
-        String orderNum = orderText.getText().toString();//入库任务号
-        String barcode = barText.getText().toString(); //托盘条码
+        String instockOrderNum = orderText.getText().toString();//入库单号
+        String trayBarcode = barText.getText().toString(); //托盘条码
 
-        if (orderNum.equals("") || barcode.equals("")) {
-            Toast.makeText(InstockNoOrderActivity.this, "数据不完整！！！", Toast.LENGTH_LONG).show();
+        if (trayBarcode.equals("")) {
+            //条码的长度判断？？
+            Toast.makeText(InstockNoOrderActivity.this, "补上托盘码", Toast.LENGTH_LONG).show();
         } else {
-
+            OkHttpClient okHttpClient = new OkHttpClient();
+            MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+            JSONObject json = new JSONObject();
             try {
-                OkHttpClient okHttpClient = new OkHttpClient();
-                MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-                JSONObject json = new JSONObject();
-                json.put("stockInOrderCode",orderNum);
-                json.put("trayCode",barcode);
-
+                json.put("stockInOrderCode",instockOrderNum);
+                json.put("trayCode",trayBarcode);
               //  Log.d("wy", String.valueOf(json));
                 RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
                 final Request request = new Request.Builder()
@@ -352,15 +417,13 @@ public class InstockNoOrderActivity extends AppCompatActivity {
                 call.enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-
+                        Log.d("无源入库 补托盘码", "onFailure");
                     }
-
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-
                         String json = response.body().string();//!!!只能调用一次!!!
-
                         try {
+                            //这边怎么处理更好
                             String js1 = new JSONObject(json).getString("state");
                             new Thread(new Runnable() {
                                 @Override

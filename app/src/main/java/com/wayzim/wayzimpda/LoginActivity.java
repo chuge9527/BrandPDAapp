@@ -2,6 +2,7 @@ package com.wayzim.wayzimpda;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,8 +10,13 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.wayzim.wayzimpda.tools.SharedHelper;
+
 public class LoginActivity extends AppCompatActivity {
     private Button mBtnlogin;
+
+    private SharedHelper sh;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +25,13 @@ public class LoginActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //存入WMS的IP
+         mContext = getApplicationContext();
+        sh = new SharedHelper(mContext);
+        sh.clearURl();
+        String url = "120.27.143.134";
+    //    String url = "192.168.0.6";
+        sh.saveURL(url);
 
         mBtnlogin =(Button) findViewById(R.id.btn_login);
         mBtnlogin.setOnClickListener(new View.OnClickListener() {
@@ -32,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
     }
 }
