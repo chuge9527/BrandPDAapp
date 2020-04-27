@@ -40,7 +40,7 @@
             android:layout_weight="0"
             android:text="查询2"
             android:textSize="20sp"
-            android:onClick="getRequest2"
+            android:onClick="getMaterialInfo2"
             />
     </LinearLayout>
     <LinearLayout
@@ -62,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:hint="物料名称 不能为空"
             android:layout_marginTop="15dp"
            />
 
@@ -149,7 +150,8 @@
             android:hint="0000 0000 0000"
             android:textSize="20sp"
             android:background="@drawable/loginedit_bg"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionNext"
+            android:selectAllOnFocus="true"
             android:singleLine="true"
             />
 
