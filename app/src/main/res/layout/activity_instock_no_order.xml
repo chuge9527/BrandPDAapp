@@ -30,8 +30,6 @@
             android:hint="输入编码关键字"
             android:textSize="20sp"
             android:background="@drawable/loginedit_bg"
-
-            android:imeOptions="actionNext"
             android:singleLine="true"/>
         <Button
             android:id="@+id/btn_search2"

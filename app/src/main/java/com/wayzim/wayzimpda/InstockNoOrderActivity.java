@@ -67,7 +67,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     private Handler handlerDiag;
     private String diagAlertInfo;
 
-
+    private boolean flagSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +94,8 @@ public class InstockNoOrderActivity extends AppCompatActivity {
         spinner1 = findViewById(R.id.material2);
         spinner2 = findViewById(R.id.unit2);
 
+        flagSearch = true;//检查 查询按键 是否重复按
+
         //是否需要托盘
      check_traycode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
          @Override
@@ -106,15 +108,10 @@ public class InstockNoOrderActivity extends AppCompatActivity {
              }
          }
      });
+     /*
      // enter键 查询货物?????
      materialCode.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            /**
-             * 参数说明
-             * @param v 被监听的对象
-             * @param actionId  动作标识符,如果值等于EditorInfo.IME_NULL，则回车键被按下。
-             * @param event    如果由输入键触发，这是事件；否则，这是空的(比如非输入键触发是空的)。
-             * @return 返回你的动作
-             */
+
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_NEXT) {
@@ -124,6 +121,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
                 return false;
             }
         });
+     */
         // 条码限制扫一次???????
         barText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             /**
@@ -214,6 +212,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
                 else {
                    // Toast.makeText(InstockNoOrderActivity.this, "请求托盘失败", Toast.LENGTH_SHORT).show();
                     showDialogInfo(httpMessage);
+                    materialTx.setText("");
                 }
 
             }
@@ -260,59 +259,66 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     //
     //获取货物编码和名称,给data1，handler处理
     public void getMaterialInfo2(View view) {
+        if(flagSearch) {
+            flagSearch =false;
+            String mCodes = materialCode.getText().toString();
+            String url = wms_URl + ":8080/api/getMaterialsByMaterialCode?materialCode=" + mCodes;
+            //   String url = "http://120.27.143.134:8080/api/getMaterialsByMaterialCode?materialCode=2";
+            try {
+                OkHttpClient okHttpClient = new OkHttpClient();//.addHeader("Connection", "close")
+                final Request request = new Request.Builder()
+                        .url(url)
+                        .get()//默认就是GET请求，可以不写
+                        .build();
+                Call call = okHttpClient.newCall(request);
 
-        String  mCodes = materialCode.getText().toString();
-        String url = wms_URl+":8080/api/getMaterialsByMaterialCode?materialCode="+mCodes;
-     //   String url = "http://120.27.143.134:8080/api/getMaterialsByMaterialCode?materialCode=2";
-        try {
-            OkHttpClient okHttpClient = new OkHttpClient();//.addHeader("Connection", "close")
-            final Request request = new Request.Builder()
-                    .url(url)
-                    .get()//默认就是GET请求，可以不写
-                    .build();
-            Call call = okHttpClient.newCall(request);
-            call.enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.d("无源入库，物料编码查询名称", "onFailure: URL失败");
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                           handler.sendEmptyMessage(0x0003);//  showDialogInfo必须在handler里
-                        }
-                    }).start();
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String json = response.body().string();//!!!只能调用一次!!!
-             //       Log.d("无源入库，物料编码查询名称", "onResponse: " + json);
-                    try {
-                        //Json数据的处理
-                        JSONObject jsonObject = new JSONObject(json);
-                        data_spinner1 = jsonObject.getString("data");
-                        //  Log.d("data:", data1);
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("无源入库，物料编码查询名称", "onFailure: URL失败");
+                        flagSearch = true;
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                handler.sendEmptyMessage(0x0001);
+                                handler.sendEmptyMessage(0x0003);//  showDialogInfo必须在handler里
                             }
                         }).start();
-                    } catch (JSONException e) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                handler.sendEmptyMessage(0x0002);
-                            }
-                        }).start();
-
                     }
-                }
-            });
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        flagSearch = true;
+                        String json = response.body().string();//!!!只能调用一次!!!
+                        //       Log.d("无源入库，物料编码查询名称", "onResponse: " + json);
+                        try {
+                            //Json数据的处理
+                            JSONObject jsonObject = new JSONObject(json);
+                            data_spinner1 = jsonObject.getString("data");
+                            //  Log.d("data:", data1);
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    handler.sendEmptyMessage(0x0001);
+                                }
+                            }).start();
+                        } catch (JSONException e) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    handler.sendEmptyMessage(0x0002);
+                                }
+                            }).start();
+
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                //          showDialogInfo("无源入库，物料编码查询名称 URL错误");
+            }
         }
-        catch (Exception e){
-            e.printStackTrace();
-  //          showDialogInfo("无源入库，物料编码查询名称 URL错误");
+        else {
+            Toast.makeText(InstockNoOrderActivity.this, "请勿重复按键", Toast.LENGTH_SHORT).show();
         }
     }
     //
@@ -343,6 +349,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
         String materialName = materialTx.getText().toString();//名称
         String countNum = goodNUmET.getText().toString();//数量
         String unitGoods = spinner2.getSelectedItem().toString();//单位
+
         String trayCode = barText.getText().toString(); //托盘条码
         boolean needtray = check_traycode.isChecked(); //是否需要托盘
         //okhttp
@@ -364,62 +371,118 @@ public class InstockNoOrderActivity extends AppCompatActivity {
                 if(goodSP[0].equals("10000000001")){
                     json.put("skuType",2);
                 }
+
                 RequestBody requestBody;
+                //不请求托盘时，忘记填写托盘码 如何处理？？？
                 if(needtray){
                     requestBody = RequestBody.create(JSON, String.valueOf(json));//请求托盘
-                }else{
-                    json.put("trayCode",trayCode);//没请求托盘，输入托盘码
-                    requestBody = RequestBody.create(JSON, String.valueOf(json));
-                }
-                final Request request = new Request.Builder()
-                        .url(url2)
-                        .post(requestBody)//post
-                        .build();
-                Call call = okHttpClient.newCall(request);
-                call.enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Log.d("无源入库，发送上架物料信息", "onFailure:无返回？ ");
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                handler2.sendEmptyMessage(0x0003);
-                            }
-                        }).start();
 
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        final String json = response.body().string();//!!!只能调用一次!!!
-                        Log.d("无源入库，上架准备结果", "onResponse: " + json);
-                        try {
-                            String js_state1 = new JSONObject(json).getString("state");
-                            httpMessage = new JSONObject(json).getString("message");
-                            String js_data1 = new JSONObject(json).getString("data");//data为空,走catch，处理message
-                            if(js_state1.equals("success")){
-                                data_order = new JSONObject(js_data1).getString("stockInOrderCode");
-                                new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    handler2.sendEmptyMessage(0x0001);
-                                }
-                            }).start();
-                            }
-                        } catch (JSONException e) {
-
+                    final Request request = new Request.Builder()
+                            .url(url2)
+                            .post(requestBody)//post
+                            .build();
+                    Call call = okHttpClient.newCall(request);
+                    call.enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Log.d("无源入库，发送上架物料信息", "onFailure:无返回？ ");
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    handler2.sendEmptyMessage(0x0002);
-
+                                    handler2.sendEmptyMessage(0x0003);
                                 }
                             }).start();
+
                         }
 
-                    }
-                });
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            final String json = response.body().string();//!!!只能调用一次!!!
+                            Log.d("无源入库，上架准备结果", "onResponse: " + json);
+                            try {
+                                String js_state1 = new JSONObject(json).getString("state");
+                                httpMessage = new JSONObject(json).getString("message");
+                                String js_data1 = new JSONObject(json).getString("data");//data为空,走catch，处理message
+                                if(js_state1.equals("success")){
+                                    data_order = new JSONObject(js_data1).getString("stockInOrderCode");
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            handler2.sendEmptyMessage(0x0001);
+                                        }
+                                    }).start();
+                                }
+                            } catch (JSONException e) {
 
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        handler2.sendEmptyMessage(0x0002);
+
+                                    }
+                                }).start();
+                            }
+
+                        }
+                    });
+                }
+                if(!needtray && !trayCode.equals("")){
+                    json.put("trayCode", trayCode);//没请求托盘，输入托盘码
+                    requestBody = RequestBody.create(JSON, String.valueOf(json));
+
+                    final Request request = new Request.Builder()
+                            .url(url2)
+                            .post(requestBody)//post
+                            .build();
+                    Call call = okHttpClient.newCall(request);
+                    call.enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Log.d("无源入库，发送上架物料信息", "onFailure:无返回？ ");
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    handler2.sendEmptyMessage(0x0003);
+                                }
+                            }).start();
+
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            final String json = response.body().string();//!!!只能调用一次!!!
+                            Log.d("无源入库，上架准备结果", "onResponse: " + json);
+                            try {
+                                String js_state1 = new JSONObject(json).getString("state");
+                                httpMessage = new JSONObject(json).getString("message");
+                                String js_data1 = new JSONObject(json).getString("data");//data为空,走catch，处理message
+                                if(js_state1.equals("success")){
+                                    data_order = new JSONObject(js_data1).getString("stockInOrderCode");
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            handler2.sendEmptyMessage(0x0001);
+                                        }
+                                    }).start();
+                                }
+                            } catch (JSONException e) {
+
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        handler2.sendEmptyMessage(0x0002);
+
+                                    }
+                                }).start();
+                            }
+
+                        }
+                    });
+                }
+                else {
+                    Toast.makeText(InstockNoOrderActivity.this, "没有托盘码！", Toast.LENGTH_LONG).show();
+                }
+                //
             }
         }catch (Exception e){
             e.printStackTrace();

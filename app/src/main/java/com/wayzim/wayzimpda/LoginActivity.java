@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         sh = new SharedHelper(mContext);
         sh.clearURl();
       //  String url = "120.27.143.134";
-        String url = "192.168.1.106";
+        String url = "192.168.1.111";
         sh.saveURL(url);
 
         mBtnlogin =(Button) findViewById(R.id.btn_login);
