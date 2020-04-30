@@ -3,7 +3,10 @@ package com.wayzim.wayzimpda.stockdetail;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
@@ -30,8 +33,8 @@ public class InventoryActivity extends AppCompatActivity {
         grid_inventory = (GridView) findViewById(R.id.grid_inventory);
 
         mData6 = new ArrayList<Icon>();
-        mData6.add(new Icon(R.mipmap.deliver4, "标签盘点"));
         mData6.add(new Icon(R.mipmap.picking4, "产品盘点"));
+        mData6.add(new Icon(R.mipmap.deliver4, "标签盘点"));
         mData6.add(new Icon(R.mipmap.receipt4, "申请盘点"));
       //  mData6.add(new Icon(R.mipmap.stock4, "养护"));
      //   mData6.add(new Icon(R.mipmap.stock5, "查询"));
@@ -44,6 +47,38 @@ public class InventoryActivity extends AppCompatActivity {
             }
         };
         grid_inventory.setAdapter(mAdapter6);
+        grid_inventory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            Intent intent ;
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //  Toast.makeText(mContext, "你点击了~" + position + "~项", Toast.LENGTH_SHORT).show();
+                switch (position){
+                    case 0:
+                        intent = new Intent(mContext , InventoryProductActivity.class);
+                        startActivity(intent);
+                        break;
+                        /*
+                    case 1:
+                        intent = new Intent(mContext ,Outstore1Activity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        intent = new Intent(mContext ,ReceiptActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 3:
+                        intent = new Intent(mContext ,ShelvesActivity.class);
+                        startActivity(intent);
+                        break;
+
+                         */
+
+                    default:
+                        break;
+                }
+
+            }
+        });
 
     }
 }

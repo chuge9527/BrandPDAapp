@@ -1,6 +1,7 @@
 package com.wayzim.wayzimpda.tools;
 
 public class Icon {
+    //界面图标
     private int iId;
     private String iName;
 

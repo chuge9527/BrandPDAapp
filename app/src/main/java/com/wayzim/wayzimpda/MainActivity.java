@@ -31,16 +31,17 @@ public class MainActivity extends AppCompatActivity {
         grid_photo = (GridView) findViewById(R.id.grid_photo);
 
         mData = new ArrayList<Icon>();
-        mData.add(new Icon(R.mipmap.iv_icon_1, "入库1"));//0
-        mData.add(new Icon(R.mipmap.iv_icon_2, "出库2"));
+        mData.add(new Icon(R.mipmap.iv_icon_1, "入库"));//1
+        mData.add(new Icon(R.mipmap.iv_icon_2, "出库"));
 
         mData.add(new Icon(R.mipmap.iv_icon_3, "收货"));
         mData.add(new Icon(R.mipmap.iv_icon_4, "上架"));
-        mData.add(new Icon(R.mipmap.iv_icon_5, "拣货"));//4
+        mData.add(new Icon(R.mipmap.iv_icon_5, "拣货"));//5
         mData.add(new Icon(R.mipmap.iv_icon_6, "发货"));
         mData.add(new Icon(R.mipmap.iv_icon_7, "库存管理"));
-        mData.add(new Icon(R.mipmap.iv_icon_1, "无源入库"));
-        mData.add(new Icon(R.mipmap.iv_icon_5, "有源入库"));//4
+
+     //   mData.add(new Icon(R.mipmap.iv_icon_1, "无源入库"));
+    //    mData.add(new Icon(R.mipmap.iv_icon_5, "有源入库"));//4
 
         mAdapter = new MyAdapter<Icon>(mData, R.layout.item_grid_icon) {
             @Override
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
               //  Toast.makeText(mContext, "你点击了~" + position + "~项", Toast.LENGTH_SHORT).show();
                 switch (position){
                     case 0:
-                        intent = new Intent(mContext ,Instore1Activity.class);
+                        intent = new Intent(mContext ,InstockActivity.class);
                         startActivity(intent);
                         break;
                     case 1:
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case 4:
-                        intent = new Intent(mContext ,PickingActivity.class);
+                        intent = new Intent(mContext ,PickingActivity.class);//5
                         startActivity(intent);
                         break;
                     case 5:
@@ -84,14 +85,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 6:
                         intent = new Intent(mContext ,StockManageActivity.class);
-                        startActivity(intent);
-                        break;
-                    case 7:
-                        intent = new Intent(mContext ,InstockNoOrderActivity.class);
-                        startActivity(intent);
-                        break;
-                    case 8:
-                        intent = new Intent(mContext ,InstockWithOrderActivity.class);
                         startActivity(intent);
                         break;
                     default:

@@ -14,10 +14,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.wayzim.wayzimpda.tools.Group;
 import com.wayzim.wayzimpda.tools.Item;
+import com.wayzim.wayzimpda.tools.ListviewHeight;
 import com.wayzim.wayzimpda.tools.MyBaseExpandableListAdapter;
 import com.wayzim.wayzimpda.tools.SharedHelper;
 
@@ -42,6 +44,7 @@ public class InstockWithOrderActivity extends AppCompatActivity {
     private EditText orderNum;
     private Handler handler;
     private Context mContext;
+    private ScrollView sv;
 
     private String data_order;
     private String[] list_OrderCode;//查询的json数组
@@ -70,6 +73,9 @@ public class InstockWithOrderActivity extends AppCompatActivity {
         exlist_lol = (ExpandableListView) findViewById(R.id.exlist_lol);
         orderSearch = (Button) findViewById(R.id.btn_search2);
         orderNum = (EditText)findViewById(R.id.orderNum);
+        //listview嵌套
+        sv = (ScrollView) findViewById(R.id.instock_scroll);
+        sv.smoothScrollTo(0, 0);
 
         //读取WMS的IP
         aContext = getApplicationContext();
@@ -193,6 +199,7 @@ public class InstockWithOrderActivity extends AppCompatActivity {
             //数据准备
             myAdapter = new MyBaseExpandableListAdapter(gData,iData,mContext);
             exlist_lol.setAdapter(myAdapter);
+         //   ListviewHeight.setListViewHight(exlist_lol);
             //为列表设置点击事件
             exlist_lol.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override

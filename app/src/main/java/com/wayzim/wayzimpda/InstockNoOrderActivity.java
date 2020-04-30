@@ -55,7 +55,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     private Spinner spinner1,spinner2;
     private CheckBox check_traycode;
     private Button  sendTrayCode;
-
+    //WMS的ip
     private SharedHelper sh;
     private Context aContext;
     private Context mContext;
@@ -66,7 +66,7 @@ public class InstockNoOrderActivity extends AppCompatActivity {
     private View view_custom;
     private Handler handlerDiag;
     private String diagAlertInfo;
-
+    //重复提交
     private boolean flagSearch;
 
     @Override
